@@ -3,11 +3,11 @@ package org.littlesheep.expboostQwQ.data
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import taboolib.common5.Coerce
-import taboolib.module.database.ColumnOptionSQLite
-import taboolib.module.database.ColumnTypeSQLite
-import taboolib.module.database.HostSQLite
+import taboolib.library.configuration.ConfigurationSection
+import taboolib.module.database.ColumnOptionSQL
+import taboolib.module.database.ColumnTypeSQL
+import taboolib.module.database.HostSQL
 import taboolib.module.database.Table
-import java.io.File
 
 /**
  * ExpboostQwQ
@@ -16,16 +16,16 @@ import java.io.File
  * @author 季楠
  * @since 2025/6/8 11:16
  */
-class DefaultSqliteDatabase(name: String, file: File) : Database {
-    private val host = HostSQLite(file)
+class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database {
+    private val host = HostSQL(section)
     private val table = Table(name, host) {
         add("key") {
-            type(ColumnTypeSQLite.TEXT) {
-                options(ColumnOptionSQLite.PRIMARY_KEY)
+            type(ColumnTypeSQL.TEXT) {
+                options(ColumnOptionSQL.PRIMARY_KEY)
             }
         }
         add("value") {
-            type(ColumnTypeSQLite.TEXT)
+            type(ColumnTypeSQL.TEXT)
         }
     }
     private val dataSource by lazy { host.createDataSource() }
@@ -34,7 +34,7 @@ class DefaultSqliteDatabase(name: String, file: File) : Database {
         table.createTable(dataSource, checkExists = true)
     }
 
-    override val type: DatabaseType = DatabaseType.SQLITE
+    override val type: DatabaseType = DatabaseType.SQL
 
     override fun getKeys(): Set<String> {
         return getValues().keys
