@@ -48,8 +48,8 @@ object MainCommand {
             debug("&r| &b◈ &r#1 语言文件重载完成，用时 ${System.currentTimeMillis() - time}ms。")
             time = System.currentTimeMillis()
 
-            val databaseAPI = ExpboostQwQ.api().getDatabase().getDefault()
-            databaseAPI.reload()
+            val databaseAPI = ExpboostQwQ.api().getDatabase()
+            databaseAPI.getDefault().reload()
             debug("&r| &b◈ &r#1 数据库重载完成，用时 ${System.currentTimeMillis() - time}ms。")
             time = System.currentTimeMillis()
 
