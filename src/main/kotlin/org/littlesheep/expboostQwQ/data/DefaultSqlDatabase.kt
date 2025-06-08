@@ -38,7 +38,11 @@ class DefaultSqlDatabase(section: ConfigurationSection, table: String) : Databas
     override val type: DatabaseType = DatabaseType.SQL
 
     override fun getKeys(): Set<String> {
-        return getValues().keys
+        return sqlTable.select(dataSource) {
+            rows("key")
+        }.map {
+            getString("key")
+        }.toSet()
     }
 
     override fun getValues(): Map<String, Any?> {

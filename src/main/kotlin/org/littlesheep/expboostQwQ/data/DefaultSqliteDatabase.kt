@@ -38,7 +38,11 @@ class DefaultSqliteDatabase(file: File, table: String) : Database {
     override val type: DatabaseType = DatabaseType.SQLITE
 
     override fun getKeys(): Set<String> {
-        return getValues().keys
+        return sqliteTable.select(dataSource) {
+            rows("key")
+        }.map {
+            getString("key")
+        }.toSet()
     }
 
     override fun getValues(): Map<String, Any?> {
