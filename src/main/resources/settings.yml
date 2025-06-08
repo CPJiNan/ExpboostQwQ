@@ -13,7 +13,7 @@ Options:
   # 启用调试模式
   Debug: false
 
-# 数据存储设置
+# 数据设置
 Database:
   # 存储方式 (JSON, SQL, SQLITE)
   Type: SQLITE
