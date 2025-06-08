@@ -1,0 +1,4 @@
+# 插件启动和禁用消息
+Plugin-Enabled: '§a[ExpboostQwQ] 插件已启用！'
+Plugin-Disable: '§c[ExpboostQwQ] 插件已禁用！.'
+Plugin-Reloaded: '§a[ExpboostQwQ] 插件配置已重载！'
