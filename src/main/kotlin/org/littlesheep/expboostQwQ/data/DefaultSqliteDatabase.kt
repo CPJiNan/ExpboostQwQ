@@ -16,7 +16,7 @@ import java.io.File
  * @author 季楠
  * @since 2025/6/8 11:16
  */
-class DefaultSqliteDatabase(name: String, file: File) : Database {
+class DefaultSqliteDatabase(file: File, name: String) : Database {
     private val host = HostSQLite(file)
     private val table = Table(name, host) {
         add("key") {
