@@ -22,10 +22,10 @@ interface ExpboostQwQDatabase {
     fun getJson(): DefaultJsonDatabase
 
     /** 获取新的 Json 数据库实例 **/
-    fun getJson(contents: String): DefaultJsonDatabase
+    fun getJson(file: File): DefaultJsonDatabase
 
     /** 获取新的 Json 数据库实例 **/
-    fun getJson(file: File): DefaultJsonDatabase
+    fun getJson(contents: String): DefaultJsonDatabase
 
     /** 获取新的 Sql 数据库实例 **/
     fun getSql(section: ConfigurationSection, table: String): DefaultSqlDatabase

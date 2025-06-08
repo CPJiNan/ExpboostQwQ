@@ -33,13 +33,13 @@ object DefaultExpboostQwQDatabase : ExpboostQwQDatabase {
     }
 
     /** 获取新的 Json 数据库实例 **/
-    override fun getJson(contents: String): DefaultJsonDatabase {
-        return DefaultJsonDatabase(contents)
+    override fun getJson(file: File): DefaultJsonDatabase {
+        return DefaultJsonDatabase(file)
     }
 
     /** 获取新的 Json 数据库实例 **/
-    override fun getJson(file: File): DefaultJsonDatabase {
-        return DefaultJsonDatabase(file)
+    override fun getJson(contents: String): DefaultJsonDatabase {
+        return DefaultJsonDatabase(contents)
     }
 
     /** 获取新的 Sql 数据库实例 **/
