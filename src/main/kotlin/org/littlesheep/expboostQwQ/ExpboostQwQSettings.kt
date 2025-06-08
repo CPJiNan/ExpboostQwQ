@@ -40,4 +40,8 @@ object ExpboostQwQSettings {
     /** 调试模式 **/
     @ConfigNode("Options.Debug")
     var debug = false
+
+    /** 数据存储方式 **/
+    @ConfigNode("Database.Type")
+    var databaseType = "SQLITE"
 }
