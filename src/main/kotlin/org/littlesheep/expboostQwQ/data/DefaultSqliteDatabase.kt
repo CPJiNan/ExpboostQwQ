@@ -16,9 +16,9 @@ import java.io.File
  * @author 季楠
  * @since 2025/6/8 11:16
  */
-class DefaultSqliteDatabase(file: File, name: String) : Database {
+class DefaultSqliteDatabase(file: File, table: String) : Database {
     private val host = HostSQLite(file)
-    private val table = Table(name, host) {
+    private val sqliteTable = Table(table, host) {
         add("key") {
             type(ColumnTypeSQLite.TEXT) {
                 options(ColumnOptionSQLite.PRIMARY_KEY)
@@ -32,7 +32,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
     private val gson = Gson()
 
     init {
-        table.createTable(dataSource, checkExists = true)
+        sqliteTable.createTable(dataSource, checkExists = true)
     }
 
     override val type: DatabaseType = DatabaseType.SQLITE
@@ -42,7 +42,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
     }
 
     override fun getValues(): Map<String, Any?> {
-        return table.select(dataSource) {
+        return sqliteTable.select(dataSource) {
             rows("key", "value")
         }.map {
             getString("key") to getString("value")
@@ -54,7 +54,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
     }
 
     override operator fun contains(path: String): Boolean {
-        return table.select(dataSource) {
+        return sqliteTable.select(dataSource) {
             rows("key")
             where("key" eq path)
             limit(1)
@@ -70,7 +70,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
     }
 
     override operator fun get(path: String, def: Any?): Any? {
-        return table.select(dataSource) {
+        return sqliteTable.select(dataSource) {
             rows("key", "value")
             where("key" eq path)
             limit(1)
@@ -81,16 +81,16 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
 
     override operator fun set(path: String, value: Any?) {
         if (value == null) {
-            table.delete(dataSource) {
+            sqliteTable.delete(dataSource) {
                 where { "key" eq path }
             }
             return
         }
-        if (contains(path)) table.update(dataSource) {
+        if (contains(path)) sqliteTable.update(dataSource) {
             set("value", value)
             where("key" eq path)
         } else {
-            table.insert(dataSource, "key", "value") {
+            sqliteTable.insert(dataSource, "key", "value") {
                 value(path, value)
             }
         }
@@ -101,7 +101,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
     override fun reload() {}
 
     override fun clear() {
-        table.delete(dataSource) { }
+        sqliteTable.delete(dataSource) { }
     }
 
     override fun getString(path: String): String? {

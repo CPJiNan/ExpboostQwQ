@@ -16,9 +16,9 @@ import taboolib.module.database.Table
  * @author 季楠
  * @since 2025/6/8 11:16
  */
-class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database {
+class DefaultSqlDatabase(section: ConfigurationSection, table: String) : Database {
     private val host = HostSQL(section)
-    private val table = Table(name, host) {
+    private val sqlTable = Table(table, host) {
         add("key") {
             type(ColumnTypeSQL.TEXT) {
                 options(ColumnOptionSQL.PRIMARY_KEY)
@@ -32,7 +32,7 @@ class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database
     private val gson = Gson()
 
     init {
-        table.createTable(dataSource, checkExists = true)
+        sqlTable.createTable(dataSource, checkExists = true)
     }
 
     override val type: DatabaseType = DatabaseType.SQL
@@ -42,7 +42,7 @@ class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database
     }
 
     override fun getValues(): Map<String, Any?> {
-        return table.select(dataSource) {
+        return sqlTable.select(dataSource) {
             rows("key", "value")
         }.map {
             getString("key") to getString("value")
@@ -54,7 +54,7 @@ class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database
     }
 
     override operator fun contains(path: String): Boolean {
-        return table.select(dataSource) {
+        return sqlTable.select(dataSource) {
             rows("key")
             where("key" eq path)
             limit(1)
@@ -70,7 +70,7 @@ class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database
     }
 
     override operator fun get(path: String, def: Any?): Any? {
-        return table.select(dataSource) {
+        return sqlTable.select(dataSource) {
             rows("key", "value")
             where("key" eq path)
             limit(1)
@@ -81,16 +81,16 @@ class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database
 
     override operator fun set(path: String, value: Any?) {
         if (value == null) {
-            table.delete(dataSource) {
+            sqlTable.delete(dataSource) {
                 where { "key" eq path }
             }
             return
         }
-        if (contains(path)) table.update(dataSource) {
+        if (contains(path)) sqlTable.update(dataSource) {
             set("value", value)
             where("key" eq path)
         } else {
-            table.insert(dataSource, "key", "value") {
+            sqlTable.insert(dataSource, "key", "value") {
                 value(path, value)
             }
         }
@@ -101,7 +101,7 @@ class DefaultSqlDatabase(section: ConfigurationSection, name: String) : Database
     override fun reload() {}
 
     override fun clear() {
-        table.delete(dataSource) { }
+        sqlTable.delete(dataSource) { }
     }
 
     override fun getString(path: String): String? {
