@@ -29,6 +29,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
         }
     }
     private val dataSource by lazy { host.createDataSource() }
+    private val gson = Gson()
 
     init {
         table.createTable(dataSource, checkExists = true)
@@ -170,7 +171,7 @@ class DefaultSqliteDatabase(file: File, name: String) : Database {
     override fun getList(path: String, def: List<*>?): List<*>? {
         val value = get(path)?.toString() ?: return def
         val type = object : TypeToken<List<*>>() {}.type
-        return Gson().fromJson(value, type)
+        return gson.fromJson(value, type)
     }
 
     override fun isList(path: String): Boolean {
