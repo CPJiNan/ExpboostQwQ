@@ -2,6 +2,7 @@ package org.littlesheep.expboostQwQ.command
 
 import org.littlesheep.expboostQwQ.ExpboostQwQ
 import org.littlesheep.expboostQwQ.ExpboostQwQSettings
+import org.littlesheep.expboostQwQ.command.subcommand.APICommand
 import org.littlesheep.expboostQwQ.event.PluginReloadEvent
 import org.littlesheep.expboostQwQ.utils.LoggerUtils.debug
 import taboolib.common.platform.ProxyCommandSender
@@ -26,6 +27,13 @@ object MainCommand {
     val main = mainCommand {
         createHelper()
     }
+
+    @CommandBody(
+        permission = "ExpboostQwQ.command.api.use",
+        permissionDefault = PermissionDefault.OP,
+        hidden = true
+    )
+    val api = APICommand.api
 
     @CommandBody(
         permission = "ExpboostQwQ.command.reload.use",
