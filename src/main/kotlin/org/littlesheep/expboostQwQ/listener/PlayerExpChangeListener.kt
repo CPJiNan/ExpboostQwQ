@@ -40,21 +40,21 @@ object PlayerExpChangeListener {
 
         val multiplier = when (ExpboostQwQSettings.boosterCalculation) {
             "highest" -> {
-                boosters.maxBy { it.multiplier }.multiplier
+                boosters.maxBy { it.multiplier }.multiplier + 1
             }
 
             "add" -> {
-                boosters.sumOf { it.multiplier }
+                boosters.sumOf { it.multiplier } + 1
             }
 
             "multiply" -> {
-                boosters.fold(1.0) { i, booster -> i * (1 + booster.multiplier) } - 1
+                boosters.fold(1.0) { i, booster -> i * (1 + booster.multiplier) }
             }
 
-            else -> 0.0
+            else -> 1.0
         }
 
-        val boostedExpAmount = event.expAmount + (expAmount * multiplier).roundToLong()
+        val boostedExpAmount = (expAmount * multiplier).roundToLong()
         player.sendLang("Exp-Boosted", event.expAmount, boostedExpAmount, multiplier)
 
         event.expAmount = boostedExpAmount
