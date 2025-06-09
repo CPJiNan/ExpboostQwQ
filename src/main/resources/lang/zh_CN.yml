@@ -2,3 +2,6 @@
 Plugin-Enabled: '§a[ExpboostQwQ] 插件已启用！'
 Plugin-Disable: '§c[ExpboostQwQ] 插件已禁用！.'
 Plugin-Reloaded: '§a[ExpboostQwQ] 插件配置已重载！'
+
+# 经验加成相关
+Exp-Boosted: "§a[ExpboostQwQ] §f获得经验 §e{0} §f→ §e{1} §7(×{2})"

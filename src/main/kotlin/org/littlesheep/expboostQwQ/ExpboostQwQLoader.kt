@@ -43,6 +43,7 @@ object ExpboostQwQLoader {
 
     @Awake(LifeCycle.ENABLE)
     fun onEnable() {
+        BoosterManager.removeInvalidBoosters()
         console().sendLang("Plugin-Enabled")
     }
 

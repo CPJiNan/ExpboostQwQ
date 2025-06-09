@@ -4,6 +4,7 @@ import com.github.cpjinan.plugin.akarilevel.common.event.exp.PlayerExpChangeEven
 import org.littlesheep.expboostQwQ.ExpboostQwQSettings
 import org.littlesheep.expboostQwQ.manager.BoosterManager
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.util.sendLang
 import kotlin.math.roundToLong
 
 /**
@@ -53,6 +54,9 @@ object PlayerExpChangeListener {
             else -> 0.0
         }
 
-        event.expAmount = event.expAmount + (expAmount * multiplier).roundToLong()
+        val boostedExpAmount = event.expAmount + (expAmount * multiplier).roundToLong()
+        player.sendLang("Exp-Boosted", event.expAmount, boostedExpAmount, multiplier)
+
+        event.expAmount = boostedExpAmount
     }
 }
