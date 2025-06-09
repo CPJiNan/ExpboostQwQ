@@ -19,7 +19,7 @@ object BoosterManager {
         levelGroup: String = "",
         source: String = ""
     ): BoosterData? {
-        if (endTime != -1L && endTime <= System.currentTimeMillis()) return null
+        if (endTime != -1L && endTime < System.currentTimeMillis()) return null
 
         val id = UUID.randomUUID().toString()
         val data = ExpboostQwQ.api().getDatabase().getDefault()
@@ -45,6 +45,16 @@ object BoosterManager {
         data["Booster_${id}_Source"] = null
     }
 
+    fun removeInvalidBoosters() {
+        val data = ExpboostQwQ.api().getDatabase().getDefault()
+        data.getStringList("Boosters").forEach {
+            val booster = getBooster(it)
+            if (booster == null || (booster.endTime != -1L && booster.endTime < System.currentTimeMillis())) {
+                removeBooster(it)
+            }
+        }
+    }
+
     fun getBooster(id: String): BoosterData? {
         val data = ExpboostQwQ.api().getDatabase().getDefault()
 
@@ -65,6 +75,7 @@ object BoosterManager {
     }
 
     fun addPlayerBooster(player: String, id: String) {
+        if (getBooster(id) == null) return
         val data = ExpboostQwQ.api().getDatabase().getDefault()
         data["Player_${player}_Boosters"] = data.getStringList("Player_${player}_Boosters").plus(id)
     }
@@ -74,6 +85,18 @@ object BoosterManager {
         val booster = data.getStringList("Player_${player}_Boosters").toMutableList()
         booster.remove(id)
         data["Player_${player}_Boosters"] = booster
+    }
+
+    fun removeInvalidPlayerBoosters(player: String) {
+        val data = ExpboostQwQ.api().getDatabase().getDefault()
+        data.getStringList("Player_${player}_Boosters")
+            .forEach {
+                val booster = getBooster(it)
+                if (booster == null || (booster.endTime != -1L && booster.endTime < System.currentTimeMillis())) {
+                    removeBooster(it)
+                    removePlayerBooster(player, it)
+                }
+            }
     }
 
     fun getPlayerBoosters(player: String): List<BoosterData> {

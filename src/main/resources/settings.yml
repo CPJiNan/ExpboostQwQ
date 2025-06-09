@@ -32,3 +32,11 @@ Database:
   SQLITE:
     file: database.db
     table: expboostqwq
+
+# 经验加成器设置
+Booster:
+  # 加成计算方式
+  # highest: 取最高加成倍率 (默认)
+  # add: 取加成倍率之和
+  # multiply: 取加成倍率之积
+  Calculation: "highest"

@@ -44,4 +44,8 @@ object ExpboostQwQSettings {
     /** 数据存储方式 **/
     @ConfigNode("Database.Type")
     var databaseType = "SQLITE"
+
+    /** 数据存储方式 **/
+    @ConfigNode("Booster.Calculation")
+    var boosterCalculation = "highest"
 }

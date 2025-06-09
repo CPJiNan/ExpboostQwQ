@@ -1,5 +1,6 @@
 package org.littlesheep.expboostQwQ
 
+import org.littlesheep.expboostQwQ.manager.BoosterManager
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Platform
@@ -47,6 +48,7 @@ object ExpboostQwQLoader {
 
     @Awake(LifeCycle.DISABLE)
     fun onDisable() {
+        BoosterManager.removeInvalidBoosters()
         console().sendLang("Plugin-Disable")
     }
 }
